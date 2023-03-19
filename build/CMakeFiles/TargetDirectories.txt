@@ -1,0 +1,3 @@
+D:/LEARNING/BasicEngine/python_interpreter/build/CMakeFiles/python_interpreter.dir
+D:/LEARNING/BasicEngine/python_interpreter/build/CMakeFiles/ALL_BUILD.dir
+D:/LEARNING/BasicEngine/python_interpreter/build/CMakeFiles/ZERO_CHECK.dir
