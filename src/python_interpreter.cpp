@@ -61,13 +61,16 @@ PyObject* PythonInterpreter::py_write(PyObject* self, PyObject* args) {
 void PythonInterpreter::draw() {
     ImGui::Begin("Python Interpreter");
 
-    ImGui::InputText("##input", input_buffer, IM_ARRAYSIZE(input_buffer));
+    bool enter_pressed = ImGui::InputText("##input", input_buffer, IM_ARRAYSIZE(input_buffer), ImGuiInputTextFlags_EnterReturnsTrue);
+
+    ImGui::SameLine();
 
     // Add a separate button for executing Python code
-    if (ImGui::Button("Execute")) {
+    bool execute_button_pressed = ImGui::Button("Execute");
+
+    if (enter_pressed || execute_button_pressed) {
         // Execute Python code
         PyObject* result = PyRun_String(input_buffer, Py_single_input, globals, locals);
-
 
         if (result) {
             PyObject* result_str = PyObject_Repr(result);
