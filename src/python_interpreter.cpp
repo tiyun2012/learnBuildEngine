@@ -69,36 +69,47 @@ void PythonInterpreter::draw() {
     bool execute_button_pressed = ImGui::Button("Execute");
 
     if (enter_pressed || execute_button_pressed) {
-        // Execute Python code
-        PyObject* result = PyRun_String(input_buffer, Py_single_input, globals, locals);
+        if (strlen(input_buffer) > 0) 
+        {
+            // Execute Python code
+            PyObject* result = PyRun_String(input_buffer, Py_single_input, globals, locals);
 
-        if (result) {
-            PyObject* result_str = PyObject_Repr(result);
-            const char* result_cstr = PyUnicode_AsUTF8(result_str);
-            output_buffer.append(result_cstr);
-            output_buffer.append("\n");
-            Py_DECREF(result);
-            Py_DECREF(result_str);
-        } else {
-            if (PyErr_Occurred()) {
-                PyObject* exc_type;
-                PyObject* exc_value;
-                PyObject* exc_traceback;
-                PyErr_Fetch(&exc_type, &exc_value, &exc_traceback);
-                PyErr_NormalizeException(&exc_type, &exc_value, &exc_traceback);
+    
 
-                PyObject* exc_str = PyObject_Repr(exc_value);
-                const char* exc_cstr = PyUnicode_AsUTF8(exc_str);
-                output_buffer.append("Error: ");
-                output_buffer.append(exc_cstr);
-                output_buffer.append("\n");
-                Py_DECREF(exc_type);
-                Py_DECREF(exc_value);
-                Py_DECREF(exc_traceback);
-                Py_DECREF(exc_str);
+            if (result) 
+            {
+                if (result != Py_None) 
+                { // Add this line
+                    PyObject* result_str = PyObject_Repr(result);
+                    const char* result_cstr = PyUnicode_AsUTF8(result_str);
+                    output_buffer.append(result_cstr);
+                    output_buffer.append("\n");
+                    Py_DECREF(result_str);
+                }
+                Py_DECREF(result);
+            } 
+            else 
+            {
+                if (PyErr_Occurred()) 
+                {
+                    PyObject* exc_type;
+                    PyObject* exc_value;
+                    PyObject* exc_traceback;
+                    PyErr_Fetch(&exc_type, &exc_value, &exc_traceback);
+                    PyErr_NormalizeException(&exc_type, &exc_value, &exc_traceback);
+
+                    PyObject* exc_str = PyObject_Repr(exc_value);
+                    const char* exc_cstr = PyUnicode_AsUTF8(exc_str);
+                    output_buffer.append("Error: ");
+                    output_buffer.append(exc_cstr);
+                    output_buffer.append("\n");
+                    Py_DECREF(exc_type);
+                    Py_DECREF(exc_value);
+                    Py_DECREF(exc_traceback);
+                    Py_DECREF(exc_str);
+                }
             }
         }
-
         PyErr_Clear();
         memset(input_buffer, 0, sizeof(input_buffer));
     }

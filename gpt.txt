@@ -89,7 +89,8 @@ private:
 }; 
 
 
-python_interpreter.cpp
+
+file: python_interpreter.cpp
 #include "python_interpreter.h"
 
 std::string PythonInterpreter::python_output;
@@ -212,7 +213,8 @@ void PythonInterpreter::draw() {
     ImGui::End();
 }
 
-and main.cpp
+
+file main.cpp
 
 #include <iostream>
 #include "glad/glad.h"
@@ -289,4 +291,3 @@ int main(int, char**) {
 
     return 0;
 }
-
