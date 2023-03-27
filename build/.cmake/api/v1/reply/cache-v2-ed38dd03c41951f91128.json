@@ -1310,6 +1310,18 @@
 			"value" : "ON"
 		},
 		{
+			"name" : "python_interpreter_LIB_DEPENDS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Dependencies for the target"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "general;opengl32;general;D:/LEARNING/BasicEngine/python_interpreter/glfw/lib-vc2022/glfw3.lib;optimized;C:/PythonVersion/python3.10.10/libs/python310.lib;debug;C:/PythonVersion/python3.10.10/libs/python310_d.lib;"
+		},
+		{
 			"name" : "python_interpreter_SOURCE_DIR",
 			"properties" : 
 			[

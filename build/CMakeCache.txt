@@ -212,6 +212,9 @@ python_interpreter_BINARY_DIR:STATIC=D:/LEARNING/BasicEngine/python_interpreter/
 //Value Computed by CMake
 python_interpreter_IS_TOP_LEVEL:STATIC=ON
 
+//Dependencies for the target
+python_interpreter_LIB_DEPENDS:STATIC=general;opengl32;general;D:/LEARNING/BasicEngine/python_interpreter/glfw/lib-vc2022/glfw3.lib;optimized;C:/PythonVersion/python3.10.10/libs/python310.lib;debug;C:/PythonVersion/python3.10.10/libs/python310_d.lib;
+
 //Value Computed by CMake
 python_interpreter_SOURCE_DIR:STATIC=D:/LEARNING/BasicEngine/python_interpreter
 

@@ -31,4 +31,3 @@ private:
     // Other private members and methods
 
 }; 
-
