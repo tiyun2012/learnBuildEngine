@@ -59,9 +59,14 @@ PyObject* PythonInterpreter::py_write(PyObject* self, PyObject* args) {
     Py_RETURN_NONE;
 }
 void PythonInterpreter::draw() {
-    ImGui::Begin("Python Interpreter");
+    ImGui::Begin("Python Editor");
+    // Set a size for the multi-line text editor
+    ImVec2 input_text_size = ImVec2(0, ImGui::GetTextLineHeight() * 8);
 
-    bool enter_pressed = ImGui::InputText("##input", input_buffer, IM_ARRAYSIZE(input_buffer), ImGuiInputTextFlags_EnterReturnsTrue);
+    // bool enter_pressed = ImGui::InputText("##input", input_buffer, IM_ARRAYSIZE(input_buffer), ImGuiInputTextFlags_EnterReturnsTrue); // olf code for single line input
+    
+    // Use ImGui::InputTextMultiline instead of ImGui::InputText
+    bool enter_pressed = ImGui::InputTextMultiline("##input", input_buffer, IM_ARRAYSIZE(input_buffer), input_text_size, ImGuiInputTextFlags_EnterReturnsTrue);
 
     ImGui::SameLine();
 
@@ -72,7 +77,7 @@ void PythonInterpreter::draw() {
         if (strlen(input_buffer) > 0) 
         {
             // Execute Python code
-            PyObject* result = PyRun_String(input_buffer, Py_single_input, globals, locals);
+            PyObject* result = PyRun_String(input_buffer, Py_file_input, globals, locals);// Py_single_input
 
     
 
