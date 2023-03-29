@@ -79,20 +79,22 @@ void PythonInterpreter::draw() {
     ImVec2 input_text_size = ImVec2(0, ImGui::GetTextLineHeight() * 8);
 
     std::string selected_text;
-    ImGui::InputTextMultiline("##input", input_buffer, IM_ARRAYSIZE(input_buffer), input_text_size, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackAlways, InputTextCallback, (void*)&selected_text);
+    ImGui::InputTextMultiline("##input", input_buffer, IM_ARRAYSIZE(input_buffer), input_text_size, ImGuiInputTextFlags_CallbackAlways, InputTextCallback, (void*)&selected_text);
 
-    bool enter_pressed = ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Enter)) && ImGui::IsWindowFocused();
+    bool enter_pressed = ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_F8)) && ImGui::IsWindowFocused();
+
 
     ImGui::SameLine();
 
     // Add a separate button for executing Python code
     bool execute_button_pressed = ImGui::Button("Execute");
 
-
-    if (enter_pressed || execute_button_pressed) {
+    if ((enter_pressed && !selected_text.empty()) || execute_button_pressed) 
+    {
         // Execute the selected Python code or the entire code if there's no selection
         const char* code_to_execute = selected_text.empty() ? input_buffer : selected_text.c_str();
         PyObject* result = PyRun_String(code_to_execute, Py_file_input, globals, locals);
+
 
         if (result) {
             if (result != Py_None) {
@@ -103,7 +105,9 @@ void PythonInterpreter::draw() {
                 Py_DECREF(result_str);
             }
             Py_DECREF(result);
-        } else {
+        } 
+        else 
+        {
             if (PyErr_Occurred()) {
                 PyObject* exc_type;
                 PyObject* exc_value;
@@ -123,10 +127,11 @@ void PythonInterpreter::draw() {
             }
         }
 
-        PyErr_Clear();
-        memset(input_buffer, 0, sizeof(input_buffer));
+        // PyErr_Clear();
+        if (selected_text.empty()) {
+            memset(input_buffer, 0, sizeof(input_buffer));
+        }    
     }
-
 
     ImGui::SameLine();
     if (ImGui::Button("Clear")) {
@@ -141,7 +146,6 @@ void PythonInterpreter::draw() {
     ImGui::BeginChild("##output", ImVec2(0, -ImGui::GetFrameHeightWithSpacing()), true, ImGuiWindowFlags_HorizontalScrollbar);
     ImGui::TextUnformatted(output_buffer.begin(), output_buffer.end());
     ImGui::EndChild();
-
 
     ImGui::End();
 }
